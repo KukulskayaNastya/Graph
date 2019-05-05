@@ -11,13 +11,31 @@ public class Task2 {
 
     static List<Integer> clearVertex(List<Vertex> vertices, List<Integer> Z, List<Integer> A) {
         if (!A.containsAll(Z)) throw new RuntimeException("Некорректные данные");
-        for (Integer vertex : A) {
-            if (Z.contains(vertex)) continue;
-            List<Integer> vertexNumbers = GraphService.getVertex(vertices, vertex).getVertexNumbers();
-            if (A.containsAll(vertexNumbers)) Z.add(vertex);
+
+        List<Integer> res = new ArrayList<>();
+        for (Integer a : A) {
+            if (Z.contains(a)) {
+                res.add(a);
+                continue;
+            }
+            List<Integer> aVertices = GraphService.getVertex(vertices, a).getVertexNumbers();
+            if (A.containsAll(aVertices)) res.add(a);
+            else cascadeDelete(vertices, a, res, A, Z);
         }
-        Collections.sort(Z);
-        return Z;
+
+        Collections.sort(res);
+        return res;
+    }
+
+    private static void cascadeDelete(List<Vertex> vertices, Integer a, List<Integer> res,
+                                      List<Integer> A, List<Integer> Z) {
+        List<Integer> aVertices = GraphService.getVertex(vertices, a).getVertexNumbers();
+        for (Integer vertex : aVertices) {
+            if (res.contains(vertex) && !Z.contains(vertex)) {
+                res.remove(vertex);
+                cascadeDelete(vertices, vertex, res, A, Z);
+            }
+        }
     }
 
     static String getSubGraph(List<Vertex> vertices, List<Integer> A) {

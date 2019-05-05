@@ -24,10 +24,10 @@ public class Main {
         vertices = GraphService.getVerticesByFile("g2.txt");
         if (!GraphService.validate(vertices)) System.out.println("G не неориентированный граф");
         else {
-            List<Integer> Z = new ArrayList<>(Arrays.asList(3, 4));
-            List<Integer> A = new ArrayList<>(Arrays.asList(3, 4, 6, 7));
+            List<Integer> Z = new ArrayList<>(Arrays.asList(1, 3));
+            List<Integer> A = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6));
 
-            List<Integer> A_ = Task2.clearVertex(vertices, new ArrayList<>(Z), new ArrayList<>(A));
+            List<Integer> A_ = Task2.clearVertex(vertices, Z, A);
             System.out.println("#2.1\n" + A_.toString().replaceAll("[\\[\\],]", ""));
 
             System.out.println("#2.2\n" + Task2.getSubGraph(vertices, A_));
